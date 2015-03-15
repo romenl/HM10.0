@@ -344,7 +344,7 @@ Bool TAppEncCfg::parseCfg( Int argc, Char* argv[] )
   ("RDpenalty",                     m_rdPenalty,                0,  "RD-penalty for 32x32 TU for intra in non-intra slices. 0:disbaled  1:RD-penalty  2:maximum RD-penalty")
 #endif
   // Entropy coding parameters
-  ("SBACRD",                         m_bUseSBACRD,                      true, "SBAC based RD estimation")
+  ("SBACRD",                         m_bUseSBACRD,                      false, "SBAC based RD estimation")
   
   // Deblocking filter parameters
   ("LoopFilterDisable",              m_bLoopFilterDisable,             false )
