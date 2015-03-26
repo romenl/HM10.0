@@ -168,7 +168,7 @@
 #define DM_CHROMA_IDX          36                    // chroma mode index for derived from luma intra mode
 
 
-#define FAST_UDI_USE_MPM 1
+#define FAST_UDI_USE_MPM 0
 
 #define RDO_WITHOUT_DQP_BITS              0           ///< Disable counting dQP bits in RDO-based mode decision
 

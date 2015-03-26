@@ -226,8 +226,11 @@ Void TComPattern::initAdiPattern( TComDataCU* pcCU, UInt uiZorderIdxInPart, UInt
 
   fillReferenceSamples (g_bitDepthY, piRoiOrigin, piAdiTemp, bNeighborFlags, iNumIntraNeighbor, iUnitSize, iNumUnitsInCu, iTotalUnits, uiCuWidth, uiCuHeight, uiWidth, uiHeight, iPicStride, bLMmode);
   //记录initAdiPattern向m_piYuvExt填充的信息
-  TraceMatrixFileOut((uint8_t*)piAdiTemp,uiWidth,uiHeight,"E:\\piAdiTemp_after.txt","Int2Pxl");
-
+  if (0 != iNumIntraNeighbor)
+  {
+	  TraceMatrixFileOut((uint8_t*)piAdiTemp,uiWidth,uiHeight,"E:\\piAdiTemp_after.txt","Int2Pxl");
+  }
+  
   Int   i;
   // generate filtered intra prediction samples
   Int iBufSize = uiCuHeight2 + uiCuWidth2 + 1;  // left and left above border + above and above right border + top left corner = length of 3. filter buffer
