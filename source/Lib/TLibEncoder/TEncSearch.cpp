@@ -2467,7 +2467,7 @@ TEncSearch::estIntraPredQT( TComDataCU* pcCU,
     Bool bLeftAvail  = false;
     pcCU->getPattern()->initPattern   ( pcCU, uiInitTrDepth, uiPartOffset );
     pcCU->getPattern()->initAdiPattern( pcCU, uiPartOffset, uiInitTrDepth, m_piYuvExt, m_iYuvExtStride, m_iYuvExtHeight, bAboveAvail, bLeftAvail );
-    
+	
     //===== determine set of modes to be tested (using prediction signal only) =====
     Int numModesAvailable     = 35; //total number of Intra modes
     Pel* piOrg         = pcOrgYuv ->getLumaAddr( uiPU, uiWidth );

@@ -167,6 +167,7 @@
     <ClCompile Include="..\..\source\Lib\TLibCommon\TComTrQuant.cpp" />
     <ClCompile Include="..\..\source\Lib\TLibCommon\TComWeightPrediction.cpp" />
     <ClCompile Include="..\..\source\Lib\TLibCommon\TComYuv.cpp" />
+    <ClCompile Include="..\..\source\Lib\TLibCommon\TraceFileOut.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\Lib\TLibCommon\AccessUnit.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="..\..\source\Lib\TLibCommon\TComTrQuant.h" />
     <ClInclude Include="..\..\source\Lib\TLibCommon\TComWeightPrediction.h" />
     <ClInclude Include="..\..\source\Lib\TLibCommon\TComYuv.h" />
+    <ClInclude Include="..\..\source\Lib\TLibCommon\TraceFileOut.h" />
     <ClInclude Include="..\..\source\Lib\TLibCommon\TypeDef.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
