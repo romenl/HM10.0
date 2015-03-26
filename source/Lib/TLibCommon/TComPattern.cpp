@@ -198,8 +198,9 @@ Void TComPattern::initAdiPattern( TComDataCU* pcCU, UInt uiZorderIdxInPart, UInt
   
   iUnitSize      = g_uiMaxCUWidth >> g_uiMaxCUDepth;
   iNumUnitsInCu  = uiCuWidth / iUnitSize;
-  iTotalUnits    = (iNumUnitsInCu << 2) + 1;
+  iTotalUnits    = (iNumUnitsInCu << 2) + 1;//左侧和上方相邻像素个数
 
+  //计算有效相邻像素的个数
   bNeighborFlags[iNumUnitsInCu*2] = isAboveLeftAvailable( pcCU, uiPartIdxLT );
   iNumIntraNeighbor  += (Int)(bNeighborFlags[iNumUnitsInCu*2]);
   iNumIntraNeighbor  += isAboveAvailable     ( pcCU, uiPartIdxLT, uiPartIdxRT, bNeighborFlags+(iNumUnitsInCu*2)+1 );

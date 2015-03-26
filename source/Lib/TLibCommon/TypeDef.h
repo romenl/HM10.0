@@ -69,7 +69,7 @@
 #define MAX_VPS_OP_SETS_PLUS1                     1024
 #define MAX_VPS_NUH_RESERVED_ZERO_LAYER_ID_PLUS1  1
 
-#define RATE_CONTROL_LAMBDA_DOMAIN                  1  ///< JCTVC-K0103, rate control by R-lambda model
+#define RATE_CONTROL_LAMBDA_DOMAIN                  0  ///< JCTVC-K0103, rate control by R-lambda model
 #define L0033_RC_BUGFIX                             1  ///< JCTVC-L0033, bug fix for R-lambda model based rate control
 
 #define MAX_CPB_CNT                     32  ///< Upper bound of (cpb_cnt_minus1 + 1)
@@ -120,7 +120,7 @@
 #define MLS_GRP_NUM                         64     ///< G644 : Max number of coefficient groups, max(16, 64)
 #define MLS_CG_SIZE                         4      ///< G644 : Coefficient group size of 4x4
 
-#define ADAPTIVE_QP_SELECTION               1      ///< G382: Adaptive reconstruction levels, non-normative part for adaptive QP selection
+#define ADAPTIVE_QP_SELECTION               0      ///< G382: Adaptive reconstruction levels, non-normative part for adaptive QP selection
 #if ADAPTIVE_QP_SELECTION
 #define ARL_C_PRECISION                     7      ///< G382: 7-bit arithmetic precision
 #define LEVEL_RANGE                         30     ///< G382: max coefficient level in statistics collection
@@ -188,8 +188,8 @@
 
 #define REG_DCT 65535
 
-#define AMP_SAD                               1           ///< dedicated SAD functions for AMP
-#define AMP_ENC_SPEEDUP                       1           ///< encoder only speed-up by AMP mode skipping
+#define AMP_SAD                               0           ///< dedicated SAD functions for AMP
+#define AMP_ENC_SPEEDUP                       0           ///< encoder only speed-up by AMP mode skipping
 #if AMP_ENC_SPEEDUP
 #define AMP_MRG                               1           ///< encoder only force merge for AMP partition (no motion search for AMP)
 #endif
