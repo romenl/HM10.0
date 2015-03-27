@@ -2466,6 +2466,8 @@ TEncSearch::estIntraPredQT( TComDataCU* pcCU,
     Bool bAboveAvail = false;
     Bool bLeftAvail  = false;
     pcCU->getPattern()->initPattern   ( pcCU, uiInitTrDepth, uiPartOffset );
+
+	// 获取参考像素，对参考像素进行滤波
     pcCU->getPattern()->initAdiPattern( pcCU, uiPartOffset, uiInitTrDepth, m_piYuvExt, m_iYuvExtStride, m_iYuvExtHeight, bAboveAvail, bLeftAvail );
 	
     //===== determine set of modes to be tested (using prediction signal only) =====
