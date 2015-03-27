@@ -128,7 +128,7 @@
 
 #define NS_HAD                               0
 
-#define HHI_RQT_INTRA_SPEEDUP             1           ///< tests one best mode with full rqt
+#define HHI_RQT_INTRA_SPEEDUP             0           ///< tests one best mode with full rqt
 #define HHI_RQT_INTRA_SPEEDUP_MOD         0           ///< tests two best modes with full rqt
 
 #if HHI_RQT_INTRA_SPEEDUP_MOD && !HHI_RQT_INTRA_SPEEDUP

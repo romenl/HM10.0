@@ -225,11 +225,6 @@ Void TComPattern::initAdiPattern( TComDataCU* pcCU, UInt uiZorderIdxInPart, UInt
   piAdiTemp   = piAdiBuf;
 
   fillReferenceSamples (g_bitDepthY, piRoiOrigin, piAdiTemp, bNeighborFlags, iNumIntraNeighbor, iUnitSize, iNumUnitsInCu, iTotalUnits, uiCuWidth, uiCuHeight, uiWidth, uiHeight, iPicStride, bLMmode);
-  //记录initAdiPattern向m_piYuvExt填充的信息
-  if (0 != iNumIntraNeighbor)
-  {
-	  TraceMatrixFileOut((uint8_t*)piAdiTemp,uiWidth,uiHeight,"E:\\piAdiTemp_after.txt","Int2Pxl");
-  }
   
   Int   i;
   // generate filtered intra prediction samples
@@ -242,6 +237,7 @@ Void TComPattern::initAdiPattern( TComDataCU* pcCU, UInt uiZorderIdxInPart, UInt
   Int* piFilterBuf = piFilteredBuf2 + uiWH;     // buffer for 2. filtering (sequential)
   Int* piFilterBufN = piFilterBuf + iBufSize;   // buffer for 1. filtering (sequential)
 
+  //将参考像素复制到原参考像素后面的内存中，间隔为原参考像素矩阵的两倍
   Int l = 0;
   // left border from bottom to top
   for (i = 0; i < uiCuHeight2; i++)
@@ -315,6 +311,54 @@ Void TComPattern::initAdiPattern( TComDataCU* pcCU, UInt uiZorderIdxInPart, UInt
   {
     piFilteredBuf1[1 + i] = piFilterBufN[l++];
   }
+
+  //记录initAdiPattern向m_piYuvExt填充的信息、复制之后的参考像素以及参考像素滤波的结果
+//  TraceMatrixFileOut((uint8_t*)piAdiTemp,uiWidth,uiHeight*4,"E:\\piAdiTemp_after_copy_filtered.txt","Int2Pxl");
+  //记录结果显示，构建参考像素和滤波完成后，缓存中的数据结构如下：
+  //======================低地址==============================
+  //O R R R R R R R R R R R R R R R R R R ..........R R R R R ——原始的参考像素值piAdiBuf第一行
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //.........
+  //.........
+  //.........
+  //.........
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # # ——原始的参考像素值piAdiBuf最后一行
+  //O R R R R R R R R R R R R R R R R R R ..........R R R R R ——滤波后的参考像素值piFilteredBuf1第一行，从piFilterBufN复制过来的
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //.........
+  //.........
+  //.........
+  //.........
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //C # # # # # # # # # # # # # # # # # # ..........# # # # # ——原始的参考像素值piFilteredBuf1最后一行
+  //# # # # # # # # # # # # # # # # # # # ..........# # # # # ——没用到的缓存piFilteredBuf2
+  //# # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //# # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //# # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //# # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //# # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //# # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //.........
+  //.........
+  //.........
+  //.........
+  //# # # # # # # # # # # # # # # # # # # ..........# # # # #
+  //# # # # # # # # # # # # # # # # # # # ..........# # # # # ——没用到的缓存piFilteredBuf2
+  //C C C C C C C C C C C C C C C C C C C ..........C C C C O ——行原始参考像素 piFilterBuf
+  //R R R R R R R R R R R R R R R R R R R ..........R R R R #
+  //C C C C C C C C C C C C C C C C C C C ..........C C C C O ——行滤波后参考像素 piFilterBufN
+  //R R R R R R R R R R R R R R R R R R R ..........R R R R #
 }
 
 Void TComPattern::initAdiPatternChroma( TComDataCU* pcCU, UInt uiZorderIdxInPart, UInt uiPartDepth, Int* piAdiBuf, Int iOrgBufStride, Int iOrgBufHeight, Bool& bAbove, Bool& bLeft )
