@@ -2501,7 +2501,7 @@ TEncSearch::estIntraPredQT( TComDataCU* pcCU,
         UInt   iModeBits = xModeBitsIntra( pcCU, uiMode, uiPU, uiPartOffset, uiDepth, uiInitTrDepth );
         Double cost      = (Double)uiSad + (Double)iModeBits * m_pcRdCost->getSqrtLambda();
         
-        CandNum += xUpdateCandList( uiMode, cost, numModesForFullRD, uiRdModeList, CandCostList );
+        CandNum += xUpdateCandList( uiMode, cost, numModesForFullRD, uiRdModeList, CandCostList );//更新各个模式以及相应的cost值
       }
     
 #if FAST_UDI_USE_MPM

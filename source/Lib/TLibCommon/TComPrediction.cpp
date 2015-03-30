@@ -191,7 +191,7 @@ Void TComPrediction::xPredIntraAng(Int bitDepth, Int* pSrc, Int srcStride, Pel*&
   Bool modeDC        = dirMode < 2;
   Bool modeHor       = !modeDC && (dirMode < 18);
   Bool modeVer       = !modeDC && !modeHor;
-  Int intraPredAngle = modeVer ? (Int)dirMode - VER_IDX : modeHor ? -((Int)dirMode - HOR_IDX) : 0;
+  Int intraPredAngle = modeVer ? (Int)dirMode - VER_IDX/*26*/ : modeHor ? -((Int)dirMode - HOR_IDX/*10*/) : 0;
   Int absAng         = abs(intraPredAngle);
   Int signAng        = intraPredAngle < 0 ? -1 : 1;
 
@@ -199,7 +199,7 @@ Void TComPrediction::xPredIntraAng(Int bitDepth, Int* pSrc, Int srcStride, Pel*&
   Int angTable[9]    = {0,    2,    5,   9,  13,  17,  21,  26,  32};
   Int invAngTable[9] = {0, 4096, 1638, 910, 630, 482, 390, 315, 256}; // (256 * 32) / Angle
   Int invAngle       = invAngTable[absAng];
-  absAng             = angTable[absAng];
+  absAng             = angTable[absAng];//将模式索引差值转换为角度偏移差
   intraPredAngle     = signAng * absAng;
 
   // Do the DC prediction
@@ -229,13 +229,13 @@ Void TComPrediction::xPredIntraAng(Int bitDepth, Int* pSrc, Int srcStride, Pel*&
     {
       for (k=0;k<blkSize+1;k++)
       {
-        refAbove[k+blkSize-1] = pSrc[k-srcStride-1];
+        refAbove[k+blkSize-1] = pSrc[k-srcStride-1];//赋值上方的参考像素到refAbove[blkSize-1]~refAbove[2*blkSize-1]，只复制前半部分
       }
       for (k=0;k<blkSize+1;k++)
       {
-        refLeft[k+blkSize-1] = pSrc[(k-1)*srcStride-1];
+        refLeft[k+blkSize-1] = pSrc[(k-1)*srcStride-1];//赋值左方的参考像素到refLeft[blkSize-1]~refLeft[2*blkSize-1]，只复制前半部分
       }
-      refMain = (modeVer ? refAbove : refLeft) + (blkSize-1);
+      refMain = (modeVer ? refAbove : refLeft) + (blkSize-1);//refMain和refSide指向拷贝的参考点的起始位置
       refSide = (modeVer ? refLeft : refAbove) + (blkSize-1);
 
       // Extend the Main reference to the left.
