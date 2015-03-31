@@ -2436,12 +2436,12 @@ TEncSearch::estIntraPredQT( TComDataCU* pcCU,
                            UInt&       ruiDistC,
                            Bool        bLumaOnly )
 {
-  UInt    uiDepth        = pcCU->getDepth(0);
-  UInt    uiNumPU        = pcCU->getNumPartInter();
-  UInt    uiInitTrDepth  = pcCU->getPartitionSize(0) == SIZE_2Nx2N ? 0 : 1;
-  UInt    uiWidth        = pcCU->getWidth (0) >> uiInitTrDepth;
+  UInt    uiDepth        = pcCU->getDepth(0);								//当前CU的depth
+  UInt    uiNumPU        = pcCU->getNumPartInter();							//当前CU的分割模式下，子块的个数
+  UInt    uiInitTrDepth  = pcCU->getPartitionSize(0) == SIZE_2Nx2N ? 0 : 1;	//TU的depth，从0开始计数
+  UInt    uiWidth        = pcCU->getWidth (0) >> uiInitTrDepth;				//PU的宽度和高度，2Nx2N模式要除以2
   UInt    uiHeight       = pcCU->getHeight(0) >> uiInitTrDepth;
-  UInt    uiQNumParts    = pcCU->getTotalNumPart() >> 2;
+  UInt    uiQNumParts    = pcCU->getTotalNumPart() >> 2;					//当前CU共包含多少个4x4块
   UInt    uiWidthBit     = pcCU->getIntraSizeIdx(0);
   UInt    uiOverallDistY = 0;
   UInt    uiOverallDistC = 0;

@@ -1643,18 +1643,19 @@ Int TComDataCU::getIntraDirLumaPredictor( UInt uiAbsPartIdx, Int* uiIntraDirPred
   Int         uiPredNum = 0;
   
   // Get intra direction of left PU
-  pcTempCU = getPULeft( uiTempPartIdx, m_uiAbsIdxInLCU + uiAbsPartIdx );
+  pcTempCU = getPULeft( uiTempPartIdx, m_uiAbsIdxInLCU + uiAbsPartIdx );//获取左方PU
   
-  iLeftIntraDir  = pcTempCU ? ( pcTempCU->isIntra( uiTempPartIdx ) ? pcTempCU->getLumaIntraDir( uiTempPartIdx ) : DC_IDX ) : DC_IDX;
+  iLeftIntraDir  = pcTempCU ? ( pcTempCU->isIntra( uiTempPartIdx ) ? pcTempCU->getLumaIntraDir( uiTempPartIdx ) : DC_IDX ) : DC_IDX;//左方PU为空或非Intra，左方的PU模式则设置为DC，否则设置为左方PU的模式
   
   // Get intra direction of above PU
-  pcTempCU = getPUAbove( uiTempPartIdx, m_uiAbsIdxInLCU + uiAbsPartIdx, true, true );
+  pcTempCU = getPUAbove( uiTempPartIdx, m_uiAbsIdxInLCU + uiAbsPartIdx, true, true );//获取上方PU
   
-  iAboveIntraDir = pcTempCU ? ( pcTempCU->isIntra( uiTempPartIdx ) ? pcTempCU->getLumaIntraDir( uiTempPartIdx ) : DC_IDX ) : DC_IDX;
+  iAboveIntraDir = pcTempCU ? ( pcTempCU->isIntra( uiTempPartIdx ) ? pcTempCU->getLumaIntraDir( uiTempPartIdx ) : DC_IDX ) : DC_IDX;//上方PU为空或非Intra，上方的PU模式则设置为DC，否则设置为上方PU的模式
   
   uiPredNum = 3;
   if(iLeftIntraDir == iAboveIntraDir)
   {
+	  //模式A和模式B相等的情况
     if( piMode )
     {
       *piMode = 1;
@@ -1662,12 +1663,14 @@ Int TComDataCU::getIntraDirLumaPredictor( UInt uiAbsPartIdx, Int* uiIntraDirPred
     
     if (iLeftIntraDir > 1) // angular modes
     {
+		//如果二者都是角度预测，那么MPM[0]设置为该角度模式，MPM[1]和MPM[2]设置为该模式的相邻模式
       uiIntraDirPred[0] = iLeftIntraDir;
       uiIntraDirPred[1] = ((iLeftIntraDir + 29) % 32) + 2;
       uiIntraDirPred[2] = ((iLeftIntraDir - 1 ) % 32) + 2;
     }
     else //non-angular
     {
+		//如果二者都不是角度预测，那么三种模式分别设置为平面、DC和垂直模式
       uiIntraDirPred[0] = PLANAR_IDX;
       uiIntraDirPred[1] = DC_IDX;
       uiIntraDirPred[2] = VER_IDX; 
@@ -1675,19 +1678,22 @@ Int TComDataCU::getIntraDirLumaPredictor( UInt uiAbsPartIdx, Int* uiIntraDirPred
   }
   else
   {
+	  //模式A与模式B不等
     if( piMode )
     {
       *piMode = 2;
     }
-    uiIntraDirPred[0] = iLeftIntraDir;
+    uiIntraDirPred[0] = iLeftIntraDir;//MPM[0]和MPM[1]分别设置为这两种模式
     uiIntraDirPred[1] = iAboveIntraDir;
     
     if (iLeftIntraDir && iAboveIntraDir ) //both modes are non-planar
     {
+		//当两个模式都不是平面模式时，MPM[2]设置为平面模式
       uiIntraDirPred[2] = PLANAR_IDX;
     }
     else
     {
+		//至少有一个是平面模式时，如果另一个是DC模式，那么MPM[2]设置为垂直模式；如果另一个不是DC模式，那么MPM[2]设置为DC模式
       uiIntraDirPred[2] =  (iLeftIntraDir+iAboveIntraDir)<2? VER_IDX : DC_IDX;
     }
   }
