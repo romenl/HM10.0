@@ -84,12 +84,12 @@ void TraceMatrixFileOut( uint8_t *pData, int nWidth, int nHeight, TCHAR fileName
 			fprintf(pTargetFile,"\n");
 		}
 	} 
-	if (0 == _tcsicmp(traceMode,_T("Sht2Pxl")))
+	else if (0 == _tcsicmp(traceMode,_T("Sht2Pxl")))
 	{
 		int actualWidth = nWidth * 2;
 		for (int i = 0;i < nHeight;i++)
 		{
-			for (int j = 0; j < actualWidth; j+=4)
+			for (int j = 0; j < actualWidth; j+=2)
 			{
 				int pelVal = 0;
 				for (int x = 0;x < 2;x++)
@@ -105,6 +105,19 @@ void TraceMatrixFileOut( uint8_t *pData, int nWidth, int nHeight, TCHAR fileName
 				{
 					fprintf(pTargetFile,"%4u ",pelVal);
 				}
+			}
+			fprintf(pTargetFile,"\n");
+		}
+	}
+	else if (0 == _tcsicmp(traceMode,_T("UCh2Sht")))
+	{
+		int nSize = sizeof(short);
+		short *pShortData = (short *)pData;
+		for (int i = 0;i < nHeight;i++)
+		{
+			for (int j = 0; j < nWidth; j++)
+			{
+				fprintf(pTargetFile,"%4d ",pShortData[i * nHeight + j]);		
 			}
 			fprintf(pTargetFile,"\n");
 		}
