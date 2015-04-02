@@ -1091,6 +1091,11 @@ TEncSearch::xIntraCodingLumaBlk( TComDataCU* pcCU,
       pResi += uiStride;
       pPred += uiStride;
     }
+
+	// 输出原始、预测和残差像素的数值
+	TraceMatrixFileOut((uint8_t *)piOrg,uiWidth,uiHeight,"E:\\Orig_block.txt","Sht2Pxl");
+	TraceMatrixFileOut((uint8_t *)piPred,uiWidth,uiHeight,"E:\\Pred_block.txt","Sht2Pxl");
+	TraceMatrixFileOut((uint8_t *)piResi,uiWidth,uiHeight,"E:\\Resi_block.txt","Sht2Pxl");
   }
   
   //===== transform and quantization =====

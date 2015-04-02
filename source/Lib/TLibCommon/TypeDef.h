@@ -63,7 +63,7 @@
 #define L0444_FPA_TYPE             1  ///< allow only FPA types 3, 4 and 5
 #define L0372 1
 #define SIGNAL_BITRATE_PICRATE_IN_VPS               0  ///< K0125: Signal bit_rate and pic_rate in VPS
-#define L0232_RD_PENALTY           1  ///< L0232: RD-penalty for 32x32 TU for intra in non-intra slices
+#define L0232_RD_PENALTY           0  ///< L0232: RD-penalty for 32x32 TU for intra in non-intra slices
 
 #define MAX_VPS_NUM_HRD_PARAMETERS                1
 #define MAX_VPS_OP_SETS_PLUS1                     1024
