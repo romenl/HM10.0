@@ -1095,7 +1095,7 @@ TEncSearch::xIntraCodingLumaBlk( TComDataCU* pcCU,
 	// 输出原始、预测和残差像素的数值
 	TraceMatrixFileOut((uint8_t *)piOrg,uiWidth,uiHeight,"E:\\Orig_block.txt","Sht2Pxl");
 	TraceMatrixFileOut((uint8_t *)piPred,uiWidth,uiHeight,"E:\\Pred_block.txt","Sht2Pxl");
-//	TraceMatrixFileOut((uint8_t *)piResi,uiWidth,uiHeight,"E:\\Resi_block.txt","UCh2Sht");
+	TraceMatrixFileOut((uint8_t *)piResi,uiStride,uiHeight,"E:\\Resi_block.txt","Residual");
   }
   
   //===== transform and quantization =====
@@ -1386,7 +1386,10 @@ TEncSearch::xRecurIntraCodingQT( TComDataCU*  pcCU,
   UInt    uiFullDepth   = pcCU->getDepth( 0 ) +  uiTrDepth;
   UInt    uiLog2TrSize  = g_aucConvertToBit[ pcCU->getSlice()->getSPS()->getMaxCUWidth() >> uiFullDepth ] + 2;
   Bool    bCheckFull    = ( uiLog2TrSize  <= pcCU->getSlice()->getSPS()->getQuadtreeTULog2MaxSize() );
+  /*判断是否将当前的PU按照整个模式进行变换和量化。当前示例下，PU大小为64×64，因此uiLog2TrSize==6，而sps中指定的最大TU为32，因此bCheckFull为false。*/
+
   Bool    bCheckSplit   = ( uiLog2TrSize  >  pcCU->getQuadtreeTULog2MinSizeInCU(uiAbsPartIdx) );
+  /*比较当前U大小同CU中允许的最小TU的大小，只有大于最小TU大小时才允许进行分割，对于当前PU，MinTUSize为16，因此允许进行分割*/
   
 #if HHI_RQT_INTRA_SPEEDUP
 #if L0232_RD_PENALTY
