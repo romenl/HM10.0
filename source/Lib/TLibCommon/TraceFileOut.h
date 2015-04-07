@@ -9,4 +9,5 @@ void TraceMatrixFileOut( uint8_t *pData, int nWidth, int nHeight, TCHAR fileName
 //记录模式：
 //1："Int2Pxl"——将一个int型数据转换为像素值，[0,255]之外的数值用‘#’替代
 //2："Sht2Pxl"——将一个short型数据转换为像素值，[0,255]之外的数值用‘#’替代
-//3："Residual"——输出块的残差数据
+//3："Residual"——输出块的残差数据，取值范围为[-255,255]
+//4："RawInt"——输出原始的int数据

@@ -1093,9 +1093,9 @@ TEncSearch::xIntraCodingLumaBlk( TComDataCU* pcCU,
     }
 
 	// 输出原始、预测和残差像素的数值
-	TraceMatrixFileOut((uint8_t *)piOrg,uiWidth,uiHeight,"E:\\Orig_block.txt","Sht2Pxl");
-	TraceMatrixFileOut((uint8_t *)piPred,uiWidth,uiHeight,"E:\\Pred_block.txt","Sht2Pxl");
-	TraceMatrixFileOut((uint8_t *)piResi,uiStride,uiHeight,"E:\\Resi_block.txt","Residual");
+// 	TraceMatrixFileOut((uint8_t *)piOrg,uiWidth,uiHeight,"E:\\Orig_block.txt","Sht2Pxl");
+// 	TraceMatrixFileOut((uint8_t *)piPred,uiWidth,uiHeight,"E:\\Pred_block.txt","Sht2Pxl");
+ 	TraceMatrixFileOut((uint8_t *)piResi,uiStride,uiHeight,"E:\\Resi_block.txt","Residual");
   }
   
   //===== transform and quantization =====
@@ -1120,6 +1120,9 @@ TEncSearch::xIntraCodingLumaBlk( TComDataCU* pcCU,
 #endif
     uiWidth, uiHeight, uiAbsSum, TEXT_LUMA, uiAbsPartIdx,useTransformSkip );
   
+  //变换和量化的系数
+  TraceMatrixFileOut((uint8_t *)pcCoeff,uiWidth,uiHeight,"E:\\Coeff_block.txt","Residual");
+
   //--- set coded block flag ---
   pcCU->setCbfSubParts          ( ( uiAbsSum ? 1 : 0 ) << uiTrDepth, TEXT_LUMA, uiAbsPartIdx, uiFullDepth );
   //--- inverse transform ---

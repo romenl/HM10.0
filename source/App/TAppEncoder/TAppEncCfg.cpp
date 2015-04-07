@@ -338,8 +338,8 @@ Bool TAppEncCfg::parseCfg( Int argc, Char* argv[] )
   ("AdaptiveQP,-aq",                m_bUseAdaptiveQP,           false, "QP adaptation based on a psycho-visual model")
   ("MaxQPAdaptationRange,-aqr",     m_iQPAdaptationRange,           6, "QP adaptation range")
   ("dQPFile,m",                     cfg_dQPFile,           string(""), "dQP file name")
-  ("RDOQ",                          m_useRDOQ,                  true )
-  ("RDOQTS",                        m_useRDOQTS,                true )
+  ("RDOQ",                          m_useRDOQ,                  false )
+  ("RDOQTS",                        m_useRDOQTS,                false )
 #if L0232_RD_PENALTY
   ("RDpenalty",                     m_rdPenalty,                0,  "RD-penalty for 32x32 TU for intra in non-intra slices. 0:disbaled  1:RD-penalty  2:maximum RD-penalty")
 #endif

@@ -41,6 +41,7 @@
 #include "TComTrQuant.h"
 #include "TComPic.h"
 #include "ContextTables.h"
+#include "TLibCommon/TraceFileOut.h"
 
 typedef struct
 {
@@ -1251,6 +1252,10 @@ Void TComTrQuant::transformNxN( TComDataCU* pcCU,
   {
     xT(bitDepth, uiMode, pcResidual, uiStride, m_plTempCoeff, uiWidth, uiHeight );
   }
+
+  //未经量化的变换系数
+  TraceMatrixFileOut((uint8_t *)m_plTempCoeff,uiWidth,uiHeight,"E:\\Raw_coeff_block.txt","RawInt");
+
   xQuant( pcCU, m_plTempCoeff, rpcCoeff,
 #if ADAPTIVE_QP_SELECTION
        rpcArlCoeff,
