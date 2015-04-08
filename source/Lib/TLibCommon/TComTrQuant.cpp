@@ -1141,10 +1141,16 @@ Void TComTrQuant::xDeQuant(Int bitDepth, const TCoeff* pSrc, Int* pDes, Int iWid
   Int iTransformShift = MAX_TR_DYNAMIC_RANGE - bitDepth - uiLog2TrSize;
 
   iShift = QUANT_IQUANT_SHIFT - QUANT_SHIFT - iTransformShift;
+  /*
+  因此iShift的实际取值为
+  iShift = bitDepth + uiLog2TrSize + （QUANT_IQUANT_SHIFT(20) - QUANT_SHIFT(14) -MAX_TR_DYNAMIC_RANGE(15))
+		 = bitDepth + uiLog2TrSize - 9
+		 = bdShift - 4;
+  */
 
   TCoeff clipQCoef;
 
-  if(getUseScalingList())
+  if(getUseScalingList())//默认为false
   {
     iShift += 4;
     Int *piDequantCoef = getDequantCoeff(scalingListType,m_cQP.m_iRem,uiLog2TrSize-2);
@@ -1173,12 +1179,19 @@ Void TComTrQuant::xDeQuant(Int bitDepth, const TCoeff* pSrc, Int* pDes, Int iWid
   else
   {
     iAdd = 1 << (iShift-1);
-    Int scale = g_invQuantScales[m_cQP.m_iRem] << m_cQP.m_iPer;
+    Int scale = g_invQuantScales/*levelScale[]数组*/[m_cQP.m_iRem/*qp%6*/] << m_cQP.m_iPer/*qp/6*/;
 
     for( Int n = 0; n < iWidth*iHeight; n++ )
     {
       clipQCoef = Clip3( -32768, 32767, piQCoef[n] );
       iCoeffQ = ( clipQCoef * scale + iAdd ) >> iShift;
+	  /*
+	  实际取值iCoeffQ = ( clipQCoef * scale + 1 << (iShift-1) ) >> iShift;
+					 = ( clipQCoef * g_invQuantScales[m_cQP.m_iRem] << m_cQP.m_iPer + 1 << (iShift-1) ) >> iShift;
+					 = ( clipQCoef * g_invQuantScales[m_cQP.m_iRem] << m_cQP.m_iPer + 1 << (bdShift - 4 - 1) ) >> (bdShift - 4);
+					 = ( clipQCoef * 2^4 *g_invQuantScales[m_cQP.m_iRem] << m_cQP.m_iPer + 1 << (bdShift - 1) ) >> bdShift;
+	  由于scaling_list_enabled_flag默认为false，因此m[x][y]默认为16，即公式中的2^4。
+	  */
       piCoef[n] = Clip3(-32768,32767,iCoeffQ);
     }
   }
